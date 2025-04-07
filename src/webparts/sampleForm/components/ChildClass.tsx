@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Label, PrimaryButton, TextField } from "@fluentui/react"
+import { ChoiceGroup, ComboBox, Dropdown, Label, PrimaryButton, SearchBox, TextField } from "@fluentui/react"
 import { DatePicker } from "@fluentui/react-datepicker-compat";
 // import type { DatePickerProps } from "@fluentui/react-datepicker-compat";
 export class ChildClass extends React.Component<{}>{
@@ -9,7 +9,9 @@ export class ChildClass extends React.Component<{}>{
             <p>I am child class</p>
             <PrimaryButton text ="Add new item" iconProps={{iconName:'add'}}/>
             <hr/>
+            <SearchBox placeholder="Search here" iconProps={{iconName:'search'}}/>
             <p>User Access Form:</p>
+
             <form>
                 <Label>Name:</Label>
                 <TextField type='text'
@@ -34,6 +36,50 @@ export class ChildClass extends React.Component<{}>{
         placeholder="Select a date..."
         // {...this.props}
       
+      />
+      <Dropdown 
+      placeholder="Select an option"
+      options={[
+        {key:'Apple',text:'Apple'},
+        {key:'Banana',text:'Banana'},
+        {key:'Mango',text:'Mango'},
+      ]}
+      label="Select a fruit"
+      />
+        <Dropdown 
+      placeholder="Select an option"
+      options={[
+        {key:'Apple',text:'Apple'},
+        {key:'Banana',text:'Banana'},
+        {key:'Mango',text:'Mango'},
+      ]}
+      label="MulitSelect"
+      multiSelect
+      defaultSelectedKeys={['Apple','Banana']}
+      />
+       <ComboBox
+      placeholder="Select an option"
+      options={[
+        {key:'Apple',text:'Apple'},
+        {key:'Banana',text:'Banana'},
+        {key:'Mango',text:'Mango'},
+      ]}
+      label="MulitSelect"
+      multiSelect
+      autoComplete="on"
+      allowFreeform
+      
+      />
+       <ChoiceGroup
+    
+      options={[
+        {key:'Apple',text:'Apple'},
+        {key:'Banana',text:'Banana',disabled:true},
+        {key:'Mango',text:'Mango'},
+      ]}
+      label="Radio Buttons"
+  
+  
       />
             </form>
             </>
