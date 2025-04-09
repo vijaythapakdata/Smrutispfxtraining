@@ -1,7 +1,8 @@
 import * as React from "react"
-import { ChoiceGroup, ComboBox, Dropdown, Label, PrimaryButton, SearchBox, TextField } from "@fluentui/react"
+import { ChoiceGroup, ComboBox, Dropdown, Label, PrimaryButton, SearchBox, TextField,Stack} from "@fluentui/react"
 import { DatePicker } from "@fluentui/react-datepicker-compat";
 // import type { DatePickerProps } from "@fluentui/react-datepicker-compat";
+const stackTokent={childrenGap:10}
 export class ChildClass extends React.Component<{}>{
     public render(): React.ReactElement<{}> {
         return(
@@ -13,11 +14,13 @@ export class ChildClass extends React.Component<{}>{
             <p>User Access Form:</p>
 
             <form>
+              <Stack tokens={stackTokent} horizontal>
                 <Label>Name:</Label>
                 <TextField type='text'
                 iconProps={{iconName:'contact'}} placeholder="Enter your name"/>
                 <Label>Email:</Label>
                 <TextField type='email' iconProps={{iconName:'mail'}} placeholder="vijaythapak2001@gmail.com"/>
+                </Stack>
                 <Label>Password:</Label>
                 <TextField type="password" canRevealPassword/>
                 <Label>I am disabled</Label>

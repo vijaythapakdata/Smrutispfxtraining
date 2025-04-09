@@ -17,11 +17,20 @@
           "manifest": "./src/webparts/sampleForm/SampleFormWebPart.manifest.json"
         }
       ]
+    },
+    "create-item-form-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/createItemForm/CreateItemFormWebPart.js",
+          "manifest": "./src/webparts/createItemForm/CreateItemFormWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
   "localizedResources": {
     "FirstWebpartWebPartStrings": "lib/webparts/firstWebpart/loc/{locale}.js",
-    "SampleFormWebPartStrings": "lib/webparts/sampleForm/loc/{locale}.js"
+    "SampleFormWebPartStrings": "lib/webparts/sampleForm/loc/{locale}.js",
+    "CreateItemFormWebPartStrings": "lib/webparts/createItemForm/loc/{locale}.js"
   }
 }
