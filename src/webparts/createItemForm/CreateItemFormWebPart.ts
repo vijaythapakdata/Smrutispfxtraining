@@ -9,19 +9,27 @@ import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import * as strings from 'CreateItemFormWebPartStrings';
 import CreateItemForm from './components/CreateItemForm';
 import { ICreateItemFormProps } from './components/ICreateItemFormProps';
-
+import {sp} from "@pnp/sp/presets/all";
 export interface ICreateItemFormWebPartProps {
   description: string;
 }
 
 export default class CreateItemFormWebPart extends BaseClientSideWebPart<ICreateItemFormWebPartProps> {
 
-
+  protected onInit(): Promise<void> {
+    return super.onInit().then(_ => {
+      sp.setup({
+        spfxContext:this.context
+      });
+    });
+  }
   public render(): void {
     const element: React.ReactElement<ICreateItemFormProps> = React.createElement(
       CreateItemForm,
       {
         description: this.properties.description,
+        siteurl:this.context.pageContext.web.absoluteUrl,
+        context:this.context
 
       }
     );
