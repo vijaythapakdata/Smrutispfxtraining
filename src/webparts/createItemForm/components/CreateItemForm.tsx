@@ -4,13 +4,16 @@ import type { ICreateItemFormProps } from './ICreateItemFormProps';
 // import { escape } from '@microsoft/sp-lodash-subset';
 import { ICreateFormState } from './ICreateFormState';
 import {Web} from "@pnp/sp/presets/all"
-import { PrimaryButton, TextField } from '@fluentui/react';
+import { DatePicker, IDatePickerStrings, PrimaryButton, TextField } from '@fluentui/react';
 export default class CreateItemForm extends React.Component<ICreateItemFormProps,ICreateFormState> {
   constructor(props:any){
     super(props);
     this.state={
       Name:"",
-      EmailAddress:""
+      EmailAddress:"",
+      DateOfBirth:"",
+      EmpAge:"",
+      PermanentAddress:""
     }
   }
   //Create Items
@@ -22,7 +25,10 @@ export default class CreateItemForm extends React.Component<ICreateItemFormProps
 let web=Web(this.props.siteurl);
 await web.lists.getByTitle("First List").items.add({
   Title:this.state.Name,
-  EmailAddress:this.state.EmailAddress
+  EmailAddress:this.state.EmailAddress,
+  Age:parseInt(this.state.EmpAge),
+  Address:this.state.PermanentAddress,
+  DOB:new Date(this.state.DateOfBirth)
 }).then((resp)=>{
   console.log("No error found");
   alert("Item Created");
@@ -35,7 +41,10 @@ await web.lists.getByTitle("First List").items.add({
 })
 this.setState({
   Name:"",
-  EmailAddress:""
+  EmailAddress:"",
+  DateOfBirth:"",
+  EmpAge:"",
+  PermanentAddress:""
 })
   }
   //Event handling
@@ -59,9 +68,50 @@ this.setState({
      value={this.state.EmailAddress}
      onChange={(_,event)=>this.handleForm("EmailAddress",event||"")}
      />
+      <TextField
+     label='Age'
+     value={this.state.EmpAge}
+     onChange={(_,event)=>this.handleForm("EmpAge",event||"")}
+     />
+      <TextField
+     label='Permanent Address'
+     value={this.state.PermanentAddress}
+     onChange={(_,event)=>this.handleForm("PermanentAddress",event||"")}
+     multiline
+     rows={5}
+     />
+     <DatePicker
+     label='Date of Birth'
+     value={this.state.DateOfBirth}
+    //  onSelectDate={{(e)=>this.setState({D})}}
+    onSelectDate={(e)=>this.setState({DateOfBirth:e})}
+    strings={DatePickerStrings}
+    formatDate={FormateDate}
+     />
      <br/>
      <PrimaryButton text="Save" onClick={()=>this.createItem()} iconProps={{iconName:'Save'}}/>
       </>
     );
   }
+}
+export const DatePickerStrings:IDatePickerStrings={
+  months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+  shortMonths: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+  days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+  shortDays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+  goToToday: "Go to today",
+  prevMonthAriaLabel: "Previous month",
+  nextMonthAriaLabel: "Next month",
+  prevYearAriaLabel: "Previous year",
+  nextYearAriaLabel: "Next year",
+  closeButtonAriaLabel: "Close date picker",
+}
+export const FormateDate=(date:any):string=>{
+  var date1=new Date(date);
+  var year=date1.getFullYear();
+  var month=(1+date1.getMonth()).toString();
+  month =month.length>1?month:"0"+month;
+  var day=date1.getDate().toString();
+  day=day.length>1?day:"0"+day;
+  return month+"/"+day+"/"+year;
 }
