@@ -4,7 +4,7 @@ import type { ICreateItemFormProps } from './ICreateItemFormProps';
 // import { escape } from '@microsoft/sp-lodash-subset';
 import { ICreateFormState } from './ICreateFormState';
 import {Web} from "@pnp/sp/presets/all"
-import { DatePicker, IDatePickerStrings, PrimaryButton, TextField } from '@fluentui/react';
+import { ChoiceGroup, DatePicker, Dropdown, IDatePickerStrings, IDropdownOption, PrimaryButton, TextField } from '@fluentui/react';
 export default class CreateItemForm extends React.Component<ICreateItemFormProps,ICreateFormState> {
   constructor(props:any){
     super(props);
@@ -13,7 +13,11 @@ export default class CreateItemForm extends React.Component<ICreateItemFormProps
       EmailAddress:"",
       DateOfBirth:"",
       EmpAge:"",
-      PermanentAddress:""
+      PermanentAddress:"",
+      Department:"",
+      Gender:"",
+      City:"",
+      Skills:[]
     }
   }
   //Create Items
@@ -28,7 +32,11 @@ await web.lists.getByTitle("First List").items.add({
   EmailAddress:this.state.EmailAddress,
   Age:parseInt(this.state.EmpAge),
   Address:this.state.PermanentAddress,
-  DOB:new Date(this.state.DateOfBirth)
+  DOB:new Date(this.state.DateOfBirth),
+  Department:this.state.Department,
+  Gender:this.state.Gender,
+  CityId:this.state.City,
+  Skills:{results:this.state.Skills}
 }).then((resp)=>{
   console.log("No error found");
   alert("Item Created");
@@ -44,14 +52,25 @@ this.setState({
   EmailAddress:"",
   DateOfBirth:"",
   EmpAge:"",
-  PermanentAddress:""
-})
+  PermanentAddress:"",
+  Gender:"",
+  City:"",
+  Department:"",
+  Skills:[]
+});
   }
   //Event handling
   private handleForm=(fieldValue:keyof ICreateFormState,value:string|boolean|number)=>{
     this.setState({
       [fieldValue]:value
     }as Pick<ICreateFormState, keyof ICreateFormState>)
+  }
+
+  //onskills change
+  private onSkillsChange=(event:React.FormEvent<HTMLElement>,option:IDropdownOption):void=>{
+    const selectedKey=option.selected?[...this.state.Skills,option.key as string]:
+    this.state.Skills.filter((key:any)=>key!==option.key);
+    this.setState({Skills:selectedKey});
   }
   public render(): React.ReactElement<ICreateItemFormProps> {
    
@@ -87,6 +106,37 @@ this.setState({
     onSelectDate={(e)=>this.setState({DateOfBirth:e})}
     strings={DatePickerStrings}
     formatDate={FormateDate}
+     />
+     <Dropdown
+     placeholder='--select option'
+     options={this.props.DepartmentChoice}
+     selectedKey={this.state.Department}
+     label='Department'
+     onChange={(_,event)=>this.handleForm("Department",event?.key as string||"")}
+     />
+      <Dropdown
+     placeholder='--select option'
+     options={this.props.CityChoice}
+     selectedKey={this.state.City}
+     label='City'
+     onChange={(_,event)=>this.handleForm("City",event?.key as number||"")}
+     />
+      <ChoiceGroup
+   
+     options={this.props.GenderChoice}
+     selectedKey={this.state.Gender}
+     label='Gender'
+     onChange={(_,event)=>this.handleForm("Gender",event?.key as string||"")}
+     />
+      <Dropdown
+     placeholder='--select option'
+     options={this.props.SkillsChoice}
+    //  selectedKey={this.state.Department}
+    defaultSelectedKeys={this.state.Skills}
+    multiSelect
+     label='Skills'
+    //  onChange={(_,event)=>this.handleForm("Department",event?.key as string||"")}
+    onChange={this.onSkillsChange}
      />
      <br/>
      <PrimaryButton text="Save" onClick={()=>this.createItem()} iconProps={{iconName:'Save'}}/>

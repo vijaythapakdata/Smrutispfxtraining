@@ -4,4 +4,8 @@ export  interface ICreateFormState{
     DateOfBirth:any;
     EmpAge:any; //Implicit data type
     PermanentAddress:any;
+    Department:any;
+    City:any;
+    Gender:any;
+    Skills:any;
 }
