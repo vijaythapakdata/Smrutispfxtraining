@@ -4,6 +4,7 @@ import type { ICreateItemFormProps } from './ICreateItemFormProps';
 // import { escape } from '@microsoft/sp-lodash-subset';
 import { ICreateFormState } from './ICreateFormState';
 import {Web} from "@pnp/sp/presets/all"
+import { PrincipalType,PeoplePicker } from '@pnp/spfx-controls-react/lib/PeoplePicker';
 import { ChoiceGroup, DatePicker, Dropdown, IDatePickerStrings, IDropdownOption, PrimaryButton, TextField } from '@fluentui/react';
 export default class CreateItemForm extends React.Component<ICreateItemFormProps,ICreateFormState> {
   constructor(props:any){
@@ -17,7 +18,12 @@ export default class CreateItemForm extends React.Component<ICreateItemFormProps
       Department:"",
       Gender:"",
       City:"",
-      Skills:[]
+      Skills:[],
+      Manager:[],
+      ManagerId:[],
+      Admin:"",
+      AdminId:0
+
     }
   }
   //Create Items
@@ -36,7 +42,9 @@ await web.lists.getByTitle("First List").items.add({
   Department:this.state.Department,
   Gender:this.state.Gender,
   CityId:this.state.City,
-  Skills:{results:this.state.Skills}
+  Skills:{results:this.state.Skills},
+  ManagerId:{results:this.state.ManagerId},
+  AdminId:this.state.AdminId,
 }).then((resp)=>{
   console.log("No error found");
   alert("Item Created");
@@ -138,10 +146,55 @@ this.setState({
     //  onChange={(_,event)=>this.handleForm("Department",event?.key as string||"")}
     onChange={this.onSkillsChange}
      />
+     <PeoplePicker
+     context={this.props.context as any}
+     titleText='Admin'
+     personSelectionLimit={1}
+     ensureUser={true}
+     principalTypes={[PrincipalType.User]}
+     defaultSelectedUsers={[this.state.Admin?this.state.Admin:""]}
+     onChange={this._getAdminValues}
+     webAbsoluteUrl={this.props.siteurl}
+     />
+     <PeoplePicker
+     context={this.props.context as any}
+     titleText='Manager'
+     personSelectionLimit={3}
+     ensureUser={true}
+     principalTypes={[PrincipalType.User]}
+    //  defaultSelectedUsers={[this.state.Admin?this.state.Admin:""]}
+    defaultSelectedUsers={this.state.Manager}
+     onChange={this._getManagerValues}
+     webAbsoluteUrl={this.props.siteurl}
+     />
      <br/>
      <PrimaryButton text="Save" onClick={()=>this.createItem()} iconProps={{iconName:'Save'}}/>
       </>
     );
+  }
+  //Get Admin Single Selected Peoplepicker
+  private _getAdminValues=(items:any[]):void=>{
+    if(items.length>0){
+      this.setState({
+        Admin:items[0].text,
+        AdminId:items[0].id
+      });
+    }
+    else{
+      this.setState({
+        Admin:"",
+        AdminId:0
+      });
+    }
+  }
+  //Multiselect peopelpicker
+  private _getManagerValues=(items:any):void=>{
+    const managers=items.map((item:any)=>item.text);
+    const managerId=items.map((item:any)=>item.id);
+    this.setState({
+      Manager:managers,
+      ManagerId:managerId
+    });
   }
 }
 export const DatePickerStrings:IDatePickerStrings={

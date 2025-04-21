@@ -20,7 +20,7 @@ export default class CreateItemFormWebPart extends BaseClientSideWebPart<ICreate
   protected onInit(): Promise<void> {
     return super.onInit().then(_ => {
       sp.setup({
-        spfxContext:this.context
+        spfxContext:this.context as any
       });
       this.getLookuupValues();
     });

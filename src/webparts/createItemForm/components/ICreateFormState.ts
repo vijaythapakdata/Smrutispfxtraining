@@ -8,4 +8,8 @@ export  interface ICreateFormState{
     City:any;
     Gender:any;
     Skills:any;
+    Manager:any;
+    ManagerId:any;
+    Admin:any;
+    AdminId:any;
 }
