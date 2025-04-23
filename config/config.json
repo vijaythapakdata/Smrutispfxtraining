@@ -25,6 +25,14 @@
           "manifest": "./src/webparts/createItemForm/CreateItemFormWebPart.manifest.json"
         }
       ]
+    },
+    "file-upload-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/fileUpload/FileUploadWebPart.js",
+          "manifest": "./src/webparts/fileUpload/FileUploadWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
@@ -32,6 +40,7 @@
     "FirstWebpartWebPartStrings": "lib/webparts/firstWebpart/loc/{locale}.js",
     "SampleFormWebPartStrings": "lib/webparts/sampleForm/loc/{locale}.js",
     "CreateItemFormWebPartStrings": "lib/webparts/createItemForm/loc/{locale}.js",
-    "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js"
+    "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js",
+    "FileUploadWebPartStrings": "lib/webparts/fileUpload/loc/{locale}.js"
   }
 }
